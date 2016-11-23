@@ -11,34 +11,33 @@ import android.widget.TextView;
 
 import com.example.professor.fourpizza.R;
 import com.example.professor.fourpizza.models.PizzaRestraunt;
-import com.example.professor.fourpizza.models.RestrauntListPicture;
-import com.example.professor.fourpizza.util.RecycleViewOnItemClickListener;
+import com.example.professor.fourpizza.models.RestrauntPictures;
+import com.example.professor.fourpizza.util.PizzaRestrauntOnItemClickListener;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-
 public class PizzaRestraunrsAdapter extends RecyclerView.Adapter<PizzaRestraunrsAdapter.ViewHolder> implements
-        RecycleViewOnItemClickListener {
+        PizzaRestrauntOnItemClickListener {
     public static final String TAG = PizzaRestraunrsAdapter.class.getSimpleName();
-    private RecycleViewOnItemClickListener clickListener;
-    private String error;
+    private PizzaRestrauntOnItemClickListener clickListener;
     private List<PizzaRestraunt> restraunts;
-    private List<RestrauntListPicture> pictures;
+    private List<RestrauntPictures> pictures;
     private String errors;
     private ViewHolder viewHolder;
     private Context context;
     private View view;
 
-    public PizzaRestraunrsAdapter(String error, List<PizzaRestraunt> restraunts,List<RestrauntListPicture> pictures) {
-        this.error = error;
+    public PizzaRestraunrsAdapter(String error, List<PizzaRestraunt> restraunts, List<RestrauntPictures> pictures) {
+        this.errors = error;
         this.restraunts = restraunts;
         this.pictures = pictures;
+        Log.d(TAG, "PizzaRestraunrsAdapter: " + restraunts.size() + " " + pictures.size() + " " + error);
     }
 
     @Override
-    public PizzaRestraunrsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.restraunts_list, parent, false);
         viewHolder = new ViewHolder(view);
@@ -47,53 +46,49 @@ public class PizzaRestraunrsAdapter extends RecyclerView.Adapter<PizzaRestraunrs
     }
 
     @Override
-    public void onBindViewHolder(final PizzaRestraunrsAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         if (restraunts != null) {
             holder.restrauntName.setText(restraunts.get(position).getRestrauntName());
             holder.distance.setText(String.valueOf(restraunts.get(position).getDistance()));
-            holder.restrauntAdress.setText(restraunts.get(position).getAdress());
-            Log.d(TAG, "onBindViewHolder: "+restraunts.size()+" "+pictures.size());
-            if(pictures != null){
-                 Picasso.with(context).load(pictureRequest(pictures.get(position)))
-                    .error(R.drawable.movies_search_frag)
-                    .into(holder.restrauntPicture, new Callback() {
-                        @Override
-                        public void onSuccess() {
-                            Log.d(TAG, "onSuccess: load");
-                        }
+            //  holder.restrauntAdress.setText(restraunts.get(position).getAdress());
+            Log.d(TAG, "onBindViewHolder: " + restraunts.size() + " " + pictures.size());
+            if (pictures != null) {
+                Picasso.with(context).load(pictureRequest(pictures.get(position)))
+                        .error(R.drawable.movies_search_frag)
+                        .into(holder.restrauntPicture, new Callback() {
+                            @Override
+                            public void onSuccess() {
+                                Log.d(TAG, "onSuccess: load");
+                            }
 
-                        @Override
-                        public void onError() {
+                            @Override
+                            public void onError() {
 
 
-                        }
-                    });
+                            }
+                        });
             }
-         /*   Log.d(TAG, "onBindViewHolder: " + position + "  " + movies.size());
-            Log.d(TAG, "onBindViewHolder: " + movies.get(position).getPicture());*/
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    clickListener.onItemClick(holder.getAdapterPosition(), view);
+                    clickListener.onItemClick(holder.getAdapterPosition(), view
+                            , restraunts.get(holder.getAdapterPosition()), pictures.get(holder.getAdapterPosition()));
                 }
             });
-          //  Log.d(TAG, "onBindViewHolder: image  " + holder.imageView.getTag());
         }
         if (errors != null) {
             holder.restrauntAdress.setText(errors);
-          //  Log.d(TAG, "onBindViewHolder: " + errors);
         }
         if (errors == null && restraunts == null) {
-           // Log.d(TAG, "onBindViewHolder: " + 55555555);
-           // holder.restrauntAdress.setText(context.getResources().getString(R.string.nothing_saved_films));
+            // Log.d(TAG, "onBindViewHolder: " + 55555555);
+            // holder.restrauntAdress.setText(context.getResources().getString(R.string.nothing_saved_films));
         }
     }
 
     @Override
     public int getItemCount() {
         if (restraunts != null) {
-          //  Log.d(TAG, "getItemCount: " + movies.size());
             return restraunts.size();
         }
         if (errors != null) {
@@ -101,6 +96,7 @@ public class PizzaRestraunrsAdapter extends RecyclerView.Adapter<PizzaRestraunrs
         }
         return 0;
     }
+
     class ViewHolder extends RecyclerView.ViewHolder {
         public TextView restrauntName;
         public TextView distance;
@@ -114,30 +110,31 @@ public class PizzaRestraunrsAdapter extends RecyclerView.Adapter<PizzaRestraunrs
 
             restrauntName = (TextView) itemView.findViewById(R.id.restraunt_name);
             distance = (TextView) itemView.findViewById(R.id.distance);
-            restrauntAdress = (TextView) itemView.findViewById(R.id.restraunt_adress);
+            // restrauntAdress = (TextView) itemView.findViewById(R.id.restraunt_adress);
             restrauntPicture = (ImageView) itemView.findViewById(R.id.restraunt_picture);
         }
     }
 
-    public void setOnItemClickListener(RecycleViewOnItemClickListener clickListener) {
+    public void setOnItemClickListener(PizzaRestrauntOnItemClickListener clickListener) {
         this.clickListener = clickListener;
     }
 
     @Override
-    public void onItemClick(int position, View v) {
+    public void onItemClick(int position, View v, PizzaRestraunt restraunt, RestrauntPictures picture) {
 
     }
-private String pictureRequest(RestrauntListPicture picture){
-    if(picture != null) {
-        StringBuilder builder = new StringBuilder();
-        builder.append(picture.getPicturePrefix())
-                .append(75)
-                .append("x")
-                .append(75)
-                .append(picture.getPictureSuffix());
-        Log.d(TAG, "pictureRequest: "+builder.toString());
-        return builder.toString();
+
+    private String pictureRequest(RestrauntPictures picture) {
+        if (picture != null) {
+            StringBuilder builder = new StringBuilder();
+            builder.append(picture.getPicturePrefix())
+                    .append(75)
+                    .append("x")
+                    .append(75)
+                    .append(picture.getPictureSuffix());
+            Log.d(TAG, "pictureRequest: " + builder.toString());
+            return builder.toString();
+        }
+        return null;
     }
-    return null;
-}
 }

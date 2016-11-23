@@ -7,7 +7,7 @@ import com.example.professor.fourpizza.http.deserialize.ChangeJson;
 import com.example.professor.fourpizza.http.deserialize.RestrauntDeserialize;
 import com.example.professor.fourpizza.http.deserialize.RestrauntListPicturesDeserialize;
 import com.example.professor.fourpizza.models.PizzaRestraunt;
-import com.example.professor.fourpizza.models.RestrauntListPicture;
+import com.example.professor.fourpizza.models.RestrauntPictures;
 import com.example.professor.fourpizza.util.ParserXml;
 import com.example.professor.fourpizza.util.ProjectConstans;
 import com.google.gson.Gson;
@@ -28,8 +28,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RequestPizza {
     private List<PizzaRestraunt> restraunts = new ArrayList<>();
-    private List<RestrauntListPicture> pictures = new ArrayList<>();
-    private RestrauntListPicture restrauntPicture;
+    private List<RestrauntPictures> pictures = new ArrayList<>();
+    private RestrauntPictures restrauntPictures;
     private static final String TAG = RequestPizza.class.getSimpleName();
     private Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(ProjectConstans.URL_SERVER)
@@ -82,16 +82,16 @@ public class RequestPizza {
         result.enqueue(new Callback<JsonElement>() {
             @Override
             public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
-                Gson gson = new GsonBuilder().registerTypeAdapter(RestrauntListPicture.class, new RestrauntListPicturesDeserialize()).create();
+                Gson gson = new GsonBuilder().registerTypeAdapter(RestrauntPictures.class, new RestrauntListPicturesDeserialize()).create();
                 Log.d(TAG, "onResponse: " + response.body() + "  " + response.message() + "  " + call.request().toString());
 
                 try {
-                    restrauntPicture = gson.fromJson(response.body(), RestrauntListPicture.class);
-                    Log.d(TAG, "onResponse: "+restrauntPicture.getWidth()+" "+restrauntPicture.getHeight()+" "+restrauntPicture.getPictureSuffix()+" "+restrauntPicture.getPicturePrefix());
+                    restrauntPictures = gson.fromJson(response.body(), RestrauntPictures.class);
+                    Log.d(TAG, "onResponse: "+ restrauntPictures.getWidth()+" "+ restrauntPictures.getHeight()+" "+ restrauntPictures.getPictureSuffix()+" "+ restrauntPictures.getPicturePrefix());
                 }catch (NullPointerException e){
                     Log.d(TAG, "onResponse: null"+e.getMessage());
                 }
-                 pictures.add(restrauntPicture);
+                 pictures.add(restrauntPictures);
                 if(pictures.size() == restraunts.size()){
                     callBack.onSucsess(restraunts,pictures);
                     Log.d(TAG, "onResponse: "+pictures.size());

@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">FourPizza</string>
+    <string name="details">Details</string>
+    <string name="reviews">Reviews</string>
+    <string name="photos">Photos</string>
+    <string name="restraunt_name">Restraunt title:</string>
+    <string name="distance">Distance:</string>
+    <string name="restraunt_adress">Adress:</string>
+    <string name="working_hours">Working time:</string>
+    <string name="details_likes">Likes:</string>
 </resources>

@@ -7,4 +7,6 @@ public class ProjectConstans {
     public static final String URL_IMAGE_SERVER = "https://irs3.4sqi.net";
     public static final String REPLACE_FRAGMENT = "replace";
     public static final String NOT_FOUND = "not found";
+    public static final String PIZZA_RESTRAUNT_KEY = "Pizza restrant";
+    public static final String RESTRAUNT_PICTURE_KEY = "Pizza picture";
 }
