@@ -14,6 +14,8 @@ import android.widget.TextView;
 
 import com.example.professor.fourpizza.MainActivity;
 import com.example.professor.fourpizza.R;
+import com.example.professor.fourpizza.callback.LikesCallBack;
+import com.example.professor.fourpizza.http.RequestPizza;
 import com.example.professor.fourpizza.models.PizzaRestraunt;
 import com.example.professor.fourpizza.models.RestrauntPictures;
 import com.example.professor.fourpizza.util.ProjectConstans;
@@ -30,6 +32,7 @@ public class DetailsRestrauntFragment extends Fragment {
     private String details;
     private String photos;
     private String reviews;
+    private String likes;
 
     private static final String TAG = DetailsRestrauntFragment.class.getSimpleName();
 
@@ -40,6 +43,8 @@ public class DetailsRestrauntFragment extends Fragment {
         context = getActivity().getBaseContext();
         restraunt = getArguments().getParcelable(ProjectConstans.PIZZA_RESTRAUNT_KEY);
         picture = getArguments().getParcelable(ProjectConstans.RESTRAUNT_PICTURE_KEY);
+
+        new RequestPizza().requestLikes(restraunt.getId(), new LikesCallBacks());
         tabHost = (TabHost) view.findViewById(R.id.tabHost);
         tabHost.setup();
 
@@ -86,8 +91,6 @@ public class DetailsRestrauntFragment extends Fragment {
         TextView name = (TextView)view.findViewById(R.id.details_restraunt_name);
         TextView distance = (TextView)view.findViewById(R.id.detail_distance);
         TextView adress = (TextView)view.findViewById(R.id.detail_adress);
-        TextView hours = (TextView)view.findViewById(R.id.detail_open_close_time);
-        TextView likes = (TextView)view.findViewById(R.id.detail_likes);
         ImageView image = (ImageView)view.findViewById(R.id.restraunt_picture_detail);
 
         Picasso.with(context).load(pictureRequest(picture)).resize(500,1000).error(R.drawable.movies_search_frag).into(image
@@ -107,6 +110,13 @@ public class DetailsRestrauntFragment extends Fragment {
         distance.setText(String.valueOf(restraunt.getDistance()));
         adress.setText(restraunt.getAdress());
     }
+    private void setLikes(String likes, String worktime){
+        TextView hours = (TextView)view.findViewById(R.id.detail_open_close_time);
+        TextView like = (TextView)view.findViewById(R.id.detail_likes);
+
+        hours.setText(worktime);
+        like.setText(likes);
+    }
     private String pictureRequest(RestrauntPictures picture) {
         if (picture != null) {
             StringBuilder builder = new StringBuilder();
@@ -119,5 +129,17 @@ public class DetailsRestrauntFragment extends Fragment {
             return builder.toString();
         }
         return null;
+    }
+    private class LikesCallBacks implements LikesCallBack {
+
+        @Override
+        public void onSucsess(String likes, String workTime) {
+            setLikes(likes,workTime);
+        }
+
+        @Override
+        public void onError(String error) {
+
+        }
     }
 }

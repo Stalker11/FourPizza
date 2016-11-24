@@ -3,9 +3,12 @@ package com.example.professor.fourpizza.http;
 import android.util.Log;
 
 import com.example.professor.fourpizza.callback.ApiCallBack;
+import com.example.professor.fourpizza.callback.LikesCallBack;
 import com.example.professor.fourpizza.http.deserialize.ChangeJson;
+import com.example.professor.fourpizza.http.deserialize.LikesDeserialize;
 import com.example.professor.fourpizza.http.deserialize.RestrauntDeserialize;
 import com.example.professor.fourpizza.http.deserialize.RestrauntListPicturesDeserialize;
+import com.example.professor.fourpizza.http.deserialize.TimeWorkDeserialize;
 import com.example.professor.fourpizza.models.PizzaRestraunt;
 import com.example.professor.fourpizza.models.RestrauntPictures;
 import com.example.professor.fourpizza.util.ParserXml;
@@ -30,6 +33,8 @@ public class RequestPizza {
     private List<PizzaRestraunt> restraunts = new ArrayList<>();
     private List<RestrauntPictures> pictures = new ArrayList<>();
     private RestrauntPictures restrauntPictures;
+    private String likes;
+    private String workTime;
     private static final String TAG = RequestPizza.class.getSimpleName();
     private Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(ProjectConstans.URL_SERVER)
@@ -62,7 +67,6 @@ public class RequestPizza {
                 for (PizzaRestraunt res:restraunts) {
                     requestPhotos(res.getId(),callBack);
                 }
-              //  Log.d(TAG, "onResponse: " + restraunt.getId());
                 Log.d(TAG, "onResponse: " + response.body() + "  " + response.message() + "  " + call.request().toString());
             }
 
@@ -74,7 +78,7 @@ public class RequestPizza {
         });
     }
 
-    public void requestPhotos(String objectId, final ApiCallBack callBack) {
+    private void requestPhotos(String objectId, final ApiCallBack callBack) {
         Call<JsonElement> result = request.getPhotos(changeIdString(objectId), ProjectConstans.CLIENT_ID
                 , ProjectConstans.CLIENT_SECRET, getDate());
         Log.d(TAG, "requestPhotos: "+changeIdString(objectId)+" "+getDate());
@@ -102,6 +106,56 @@ public class RequestPizza {
             @Override
             public void onFailure(Call<JsonElement> call, Throwable t) {
                 Log.d(TAG, "onFailure: " + t.getMessage());
+            }
+        });
+    }
+    public void requestLikes(final String objectId, final LikesCallBack callBack){
+        Call<JsonElement> result = request.getLikes(changeIdString(objectId), ProjectConstans.CLIENT_ID
+                , ProjectConstans.CLIENT_SECRET, getDate());
+        result.enqueue(new Callback<JsonElement>() {
+            @Override
+            public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
+                Gson gson = new GsonBuilder().registerTypeAdapter(String.class, new LikesDeserialize()).create();
+                try {
+                    Log.d(TAG, "onResponse: " + response.body() + "  " + response.message() + "  " + call.request().toString());
+                    getWorkTime(objectId, callBack);
+                    likes = gson.fromJson(response.body(), String.class);
+                    Log.d(TAG, "onResponse: "+ likes);
+
+                }catch (NullPointerException e){
+                    Log.d(TAG, "onResponse: null"+e.getMessage());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonElement> call, Throwable t) {
+
+            }
+        });
+
+        Log.d(TAG, "requestPhotos: "+changeIdString(objectId)+" "+getDate());
+    }
+    private void getWorkTime(String objectId, final LikesCallBack callBack){
+        Call<JsonElement> result = request.getWorkTime(changeIdString(objectId), ProjectConstans.CLIENT_ID
+                , ProjectConstans.CLIENT_SECRET, getDate());
+        result.enqueue(new Callback<JsonElement>() {
+            @Override
+            public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
+                Log.d(TAG, "onResponse: " + response.body() + "  " + response.message() + "  " + call.request().toString());
+                Gson gson = new GsonBuilder().registerTypeAdapter(String.class, new TimeWorkDeserialize()).create();
+                try {
+                    workTime = gson.fromJson(response.body(), String.class);
+                    callBack.onSucsess(likes,workTime);
+                    Log.d(TAG, "onResponse: "+ workTime);
+
+                }catch (NullPointerException e){
+                    Log.d(TAG, "onResponse: null"+e.getMessage());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonElement> call, Throwable t) {
+
             }
         });
     }
