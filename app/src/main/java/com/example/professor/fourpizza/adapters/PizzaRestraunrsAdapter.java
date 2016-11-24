@@ -64,7 +64,6 @@ public class PizzaRestraunrsAdapter extends RecyclerView.Adapter<PizzaRestraunrs
                             @Override
                             public void onError() {
 
-
                             }
                         });
             }

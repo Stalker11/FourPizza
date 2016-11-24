@@ -77,6 +77,7 @@ public class DetailsRestrauntFragment extends Fragment {
                     Log.d(TAG, "onTabChanged: " + tabHost.getCurrentTabTag());
                 }
                 else if(tabHost.getCurrentTabTag().equals(photos)){
+                    new RequestPizza().requestPhotoForDetails(restraunt.getId());
                     Log.d(TAG, "onTabChanged: " + tabHost.getCurrentTabTag());
                 }
 

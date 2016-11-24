@@ -52,7 +52,7 @@ public class RequestPizza {
                 Gson gson = new GsonBuilder().registerTypeAdapter(PizzaRestraunt.class, new RestrauntDeserialize()).create();
                 Log.d(TAG, "onResponse: "+call.request().toString());
                // restraunt = gson.fromJson(response.body().toString(), PizzaRestraunt.class);
-                restraunts = gson.fromJson(ChangeJson.change(response.body())
+                restraunts = gson.fromJson(ChangeJson.changeRestrauntJson(response.body())
                         , new TypeToken<ArrayList<PizzaRestraunt>>() {
                         }.getType());
                 Collections.sort(restraunts, new Comparator<PizzaRestraunt>() {
@@ -118,7 +118,7 @@ public class RequestPizza {
                 Gson gson = new GsonBuilder().registerTypeAdapter(String.class, new LikesDeserialize()).create();
                 try {
                     Log.d(TAG, "onResponse: " + response.body() + "  " + response.message() + "  " + call.request().toString());
-                    getWorkTime(objectId, callBack);
+                    requestWorkTime(objectId, callBack);
                     likes = gson.fromJson(response.body(), String.class);
                     Log.d(TAG, "onResponse: "+ likes);
 
@@ -135,7 +135,7 @@ public class RequestPizza {
 
         Log.d(TAG, "requestPhotos: "+changeIdString(objectId)+" "+getDate());
     }
-    private void getWorkTime(String objectId, final LikesCallBack callBack){
+    private void requestWorkTime(String objectId, final LikesCallBack callBack){
         Call<JsonElement> result = request.getWorkTime(changeIdString(objectId), ProjectConstans.CLIENT_ID
                 , ProjectConstans.CLIENT_SECRET, getDate());
         result.enqueue(new Callback<JsonElement>() {
@@ -148,6 +148,30 @@ public class RequestPizza {
                     callBack.onSucsess(likes,workTime);
                     Log.d(TAG, "onResponse: "+ workTime);
 
+                }catch (NullPointerException e){
+                    Log.d(TAG, "onResponse: null"+e.getMessage());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonElement> call, Throwable t) {
+
+            }
+        });
+    }
+    public void requestPhotoForDetails(String objectId){
+        Call<JsonElement> result = request.getPhotos(changeIdString(objectId), ProjectConstans.CLIENT_ID
+                , ProjectConstans.CLIENT_SECRET, getDate());
+        result.enqueue(new Callback<JsonElement>() {
+            @Override
+            public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
+                Log.d(TAG, "onResponse details: " + ChangeJson.changePictureJson(response.body()) + "  " + response.message() + "  " + call.request().toString());
+              //  Gson gson = new GsonBuilder().registerTypeAdapter(RestrauntPictures.class, new RestrauntPicturesDeserialize()).create();
+                Gson gson = new GsonBuilder().create();
+                try {
+                    pictures = gson.fromJson(ChangeJson.changePictureJson(response.body())
+                            , new TypeToken<ArrayList<RestrauntPictures>>(){}.getType());
+                    Log.d(TAG, "onResponse details: "+ pictures.get(1).getPicturePrefix());
                 }catch (NullPointerException e){
                     Log.d(TAG, "onResponse: null"+e.getMessage());
                 }
