@@ -4,6 +4,9 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,15 +15,21 @@ import android.widget.ImageView;
 import android.widget.TabHost;
 import android.widget.TextView;
 
-import com.example.professor.fourpizza.MainActivity;
 import com.example.professor.fourpizza.R;
+import com.example.professor.fourpizza.adapters.ImagesAdapter;
+import com.example.professor.fourpizza.adapters.ReviewsAdapter;
 import com.example.professor.fourpizza.callback.LikesCallBack;
+import com.example.professor.fourpizza.callback.PhotosCallBack;
+import com.example.professor.fourpizza.callback.ReviewsCallBack;
 import com.example.professor.fourpizza.http.RequestPizza;
 import com.example.professor.fourpizza.models.PizzaRestraunt;
 import com.example.professor.fourpizza.models.RestrauntPictures;
+import com.example.professor.fourpizza.models.UsersReviews;
 import com.example.professor.fourpizza.util.ProjectConstans;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
+
+import java.util.List;
 
 public class DetailsRestrauntFragment extends Fragment {
     private View view;
@@ -33,6 +42,9 @@ public class DetailsRestrauntFragment extends Fragment {
     private String photos;
     private String reviews;
     private String likes;
+    private RecyclerView recycler;
+    private ImagesAdapter imagesAdapter;
+    private ReviewsAdapter reviewsAdapter;
 
     private static final String TAG = DetailsRestrauntFragment.class.getSimpleName();
 
@@ -74,11 +86,17 @@ public class DetailsRestrauntFragment extends Fragment {
                     setDetails(restraunt);
                 }
                 else if(tabHost.getCurrentTabTag().equals(reviews)){
-                    Log.d(TAG, "onTabChanged: " + tabHost.getCurrentTabTag());
+                    if(reviewsAdapter == null) {
+                        Log.d(TAG, "onTabChanged: " + tabHost.getCurrentTabTag());
+                        new RequestPizza().requestReviews(restraunt.getId(), new ReviewCallBack());
+                    }
                 }
                 else if(tabHost.getCurrentTabTag().equals(photos)){
-                    new RequestPizza().requestPhotoForDetails(restraunt.getId());
-                    Log.d(TAG, "onTabChanged: " + tabHost.getCurrentTabTag());
+                    if(imagesAdapter == null) {
+                        new RequestPizza().requestPhotoForDetails(restraunt.getId(), new PhotoCallBack());
+                        Log.d(TAG, "onTabChanged: " + tabHost.getCurrentTabTag());
+                    }
+
                 }
 
             }
@@ -88,13 +106,21 @@ public class DetailsRestrauntFragment extends Fragment {
         Log.d(TAG, "onCreateView: "+tabHost.getCurrentTab());
         return view;
     }
+    private void setPhotos(List<RestrauntPictures> pictures){
+        imagesAdapter = new ImagesAdapter(pictures);
+        Log.d(TAG, "setPhotos: "+220);
+        recycler = (RecyclerView)view.findViewById(R.id.photos_recycler);
+        recycler.setAdapter(imagesAdapter);
+        Log.d(TAG, "setPhotos: "+recycler+" "+ imagesAdapter);
+        recycler.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+    }
     private void setDetails(PizzaRestraunt restraunt){
         TextView name = (TextView)view.findViewById(R.id.details_restraunt_name);
         TextView distance = (TextView)view.findViewById(R.id.detail_distance);
         TextView adress = (TextView)view.findViewById(R.id.detail_adress);
         ImageView image = (ImageView)view.findViewById(R.id.restraunt_picture_detail);
 
-        Picasso.with(context).load(pictureRequest(picture)).resize(500,1000).error(R.drawable.movies_search_frag).into(image
+        Picasso.with(context).load(pictureRequest(picture)).resize(700,300).error(R.drawable.movies_search_frag).into(image
                 , new Callback() {
                     @Override
                     public void onSuccess() {
@@ -117,6 +143,14 @@ public class DetailsRestrauntFragment extends Fragment {
 
         hours.setText(worktime);
         like.setText(likes);
+    }
+    private void setReviews(List<UsersReviews> reviews){
+        reviewsAdapter = new ReviewsAdapter(reviews);
+        Log.d(TAG, "setPhotos: "+220);
+        recycler = (RecyclerView)view.findViewById(R.id.review_recycler);
+        recycler.setAdapter(reviewsAdapter);
+        Log.d(TAG, "setPhotos: "+recycler+" "+reviewsAdapter);
+        recycler.setLayoutManager(new LinearLayoutManager(context));
     }
     private String pictureRequest(RestrauntPictures picture) {
         if (picture != null) {
@@ -141,6 +175,18 @@ public class DetailsRestrauntFragment extends Fragment {
         @Override
         public void onError(String error) {
 
+        }
+    }
+    private class PhotoCallBack implements PhotosCallBack{
+        @Override
+        public void onSucsess(List<RestrauntPictures> pictures) {
+        setPhotos(pictures);
+        }
+    }
+    private class ReviewCallBack implements ReviewsCallBack{
+        @Override
+        public void onSucsess(List<UsersReviews> reviews) {
+            setReviews(reviews);
         }
     }
 }

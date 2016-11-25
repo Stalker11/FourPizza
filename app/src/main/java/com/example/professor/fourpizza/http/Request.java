@@ -34,5 +34,10 @@ public interface Request {
                                @Query(value = "client_id", encoded = true) String clientId,
                                @Query(value = "client_secret", encoded = true) String clientSecret,
                                @Query(value = "v", encoded = true) String date);
+    @GET("/v2/venues/{id}/tips?")
+    Call<JsonElement> getReviews(@Path("id") String placeId,
+                                  @Query(value = "client_id", encoded = true) String clientId,
+                                  @Query(value = "client_secret", encoded = true) String clientSecret,
+                                  @Query(value = "v", encoded = true) String date);
 
 }

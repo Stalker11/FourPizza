@@ -17,4 +17,10 @@ public class ChangeJson {
         JsonArray items = photos.getAsJsonArray("items");
         return items;
     }
+    public static JsonElement changeReviewsJson(JsonElement json){
+        JsonObject obj = json.getAsJsonObject().getAsJsonObject("response");
+        JsonObject likes = obj.getAsJsonObject().getAsJsonObject("tips");
+        JsonArray items = likes.getAsJsonArray("items");
+        return items;
+    }
 }

@@ -1,5 +1,6 @@
 package com.example.professor.fourpizza.http.deserialize;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
@@ -14,6 +15,6 @@ public class LikesDeserialize implements JsonDeserializer<String> {
         JsonObject obj = json.getAsJsonObject().getAsJsonObject("response");
         JsonObject likes = obj.getAsJsonObject("likes");
         JsonElement like = likes.get("summary");
-        return like.toString();
+        return new Gson().fromJson(like,String.class);
     }
 }

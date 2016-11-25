@@ -3,9 +3,8 @@
     android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="match_parent">
 <ImageView
-    style="@style/ListRestraunts"
-    android:id="@+id/image_container1"/>
-    <ImageView
-        style="@style/ListRestraunts"
-        android:id="@+id/image_container2"/>
+   android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:id="@+id/image_container"/>
+
 </LinearLayout>

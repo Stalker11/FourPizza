@@ -40,7 +40,8 @@ public class RestrauntsListFragment extends Fragment {
         Log.d(TAG, "onCreateView: ");
         return view;
     }
-      private void setRestrauntsList(List<PizzaRestraunt> restrauntsList, List<RestrauntPictures> pictures, String err){
+
+    private void setRestrauntsList(List<PizzaRestraunt> restrauntsList, List<RestrauntPictures> pictures, String err){
         if (restrauntsList != null) {
             Log.d(TAG, "setRestrauntsList: ");
           //  CustomProgressDialog.showProgressDialog();
