@@ -3,42 +3,50 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+
         <ImageView
-           style="@style/ImageStyleRestrauntList"
-            android:id="@+id/restraunt_picture"/>
+            android:id="@+id/restraunt_picture"
+            style="@style/ImageStyleRestrauntList" />
+
         <LinearLayout
-          style="@style/LinearDetailStyle"
+            style="@style/LinearDetailStyle"
             android:orientation="vertical">
+
             <LinearLayout
                 style="@style/LinearDetailStyle"
                 android:orientation="horizontal">
+
                 <TextView
                     style="@style/ListRestraunts"
                     android:gravity="left"
-                    android:text="@string/restraunt_name"
-                    />
+                    android:text="@string/restraunt_name" />
+
                 <TextView
                     android:id="@+id/restraunt_name"
                     style="@style/ListRestraunts"
                     android:gravity="right"
-                    android:paddingRight="@dimen/right_padding_restraunt_list"/>
+                    android:paddingRight="@dimen/right_padding_restraunt_list" />
             </LinearLayout>
+
             <LinearLayout
                 style="@style/LinearDetailStyle"
                 android:orientation="horizontal">
+
                 <TextView
                     style="@style/ListRestraunts"
                     android:gravity="left"
-                    android:text="@string/distance"/>
+                    android:text="@string/distance" />
+
                 <TextView
                     android:id="@+id/distance"
                     style="@style/ListRestraunts"
                     android:gravity="right"
-                    android:paddingRight="@dimen/right_padding_restraunt_list"/>
+                    android:paddingRight="@dimen/right_padding_restraunt_list" />
             </LinearLayout>
         </LinearLayout>
 

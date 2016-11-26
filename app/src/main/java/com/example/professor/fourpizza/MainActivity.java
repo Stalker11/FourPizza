@@ -21,21 +21,23 @@ private final String TAG = MainActivity.class.getSimpleName();
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        fm = getSupportFragmentManager();
         createFragment(FragmentGenerator.createRestrauntListFragment());
+        fm = getSupportFragmentManager();
     }
     public void createFragment(Fragment fr){
         trans = getSupportFragmentManager().beginTransaction();
         trans.replace(R.id.fragment_container, fr, ProjectConstans.REPLACE_FRAGMENT);
         trans.addToBackStack(fr.getClass().getSimpleName());
         trans.commit();
+//        Log.d(TAG, "createFragment: "+fm.getBackStackEntryCount());
     }
 
 
     @Override
     public void onBackPressed() {
         Log.d(TAG, "onBackPressed: "+fm.getBackStackEntryCount());
-        if (fm.getBackStackEntryCount() > 0) {
+        Log.d(TAG, "onBackPressed: " + fm.findFragmentById(R.id.fragment_container)+"  "+fm.getBackStackEntryCount());
+        if (fm.getBackStackEntryCount() >= 1) {
             fm.popBackStack();
             Log.d(TAG, "onBackPressed: " + fm.findFragmentById(R.id.fragment_container)+"  "+fm.getBackStackEntryCount());
         }

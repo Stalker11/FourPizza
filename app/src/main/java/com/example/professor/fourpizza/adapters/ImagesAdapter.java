@@ -9,9 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.example.professor.fourpizza.R;
-import com.example.professor.fourpizza.models.PizzaRestraunt;
 import com.example.professor.fourpizza.models.RestrauntPictures;
-import com.example.professor.fourpizza.util.PizzaRestrauntOnItemClickListener;
 import com.example.professor.fourpizza.util.RecyclerOnItemClickListener;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
@@ -29,7 +27,7 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ViewHolder
 
     public ImagesAdapter(List<RestrauntPictures> pictures) {
         this.pictures = pictures;
-        Log.d(TAG, "ImagesAdapter: "+pictures.size());
+        Log.d(TAG, "ImagesAdapter: " + pictures.size());
     }
 
     @Override
@@ -45,7 +43,7 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ViewHolder
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         if (pictures != null) {
-            Log.d(TAG, "onBindViewHolder: "+pictures.size());
+            Log.d(TAG, "onBindViewHolder: " + pictures.size());
             Picasso.with(context).load(pictureRequest(pictures.get(position)))
                     .error(R.drawable.movies_search_frag)
                     .into(holder.restrauntPicture, new Callback() {
@@ -64,7 +62,7 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ViewHolder
 
     @Override
     public int getItemCount() {
-        if(pictures != null){
+        if (pictures != null) {
             return pictures.size();
         }
         return 0;
@@ -99,6 +97,7 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ViewHolder
             restrauntPicture = (ImageView) itemView.findViewById(R.id.image_container);
         }
     }
+
     public void setOnItemClickListener(RecyclerOnItemClickListener clickListener) {
         this.listener = clickListener;
     }

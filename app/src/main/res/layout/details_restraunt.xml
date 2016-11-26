@@ -1,67 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
     <ImageView
+        android:id="@+id/restraunt_picture_detail"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/restraunt_picture_detail"/>
+        android:layout_height="wrap_content" />
+
     <LinearLayout
         style="@style/LinearDetailStyle"
         android:orientation="vertical">
 
-    <LinearLayout
-        style="@style/LinearDetailStyle"
-        android:orientation="horizontal">
-        <TextView
-           style="@style/ListRestraunts"
-            android:text="@string/restraunt_name"
-            android:gravity="left"/>
-        <TextView
-            style="@style/ListRestraunts"
-            android:id="@+id/details_restraunt_name"/>
+        <LinearLayout
+            style="@style/LinearDetailStyle"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/ListRestraunts"
+                android:gravity="left"
+                android:text="@string/restraunt_name" />
+
+            <TextView
+                android:id="@+id/details_restraunt_name"
+                style="@style/ListRestraunts" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/LinearDetailStyle">
+
+            <TextView
+                style="@style/ListRestraunts"
+                android:text="@string/distance" />
+
+            <TextView
+                android:id="@+id/detail_distance"
+                style="@style/ListRestraunts" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/LinearDetailStyle">
+
+            <TextView
+                style="@style/ListRestraunts"
+                android:text="@string/restraunt_adress" />
+
+            <TextView
+                android:id="@+id/detail_adress"
+                style="@style/ListRestraunts" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/LinearDetailStyle">
+
+            <TextView
+                style="@style/ListRestraunts"
+                android:text="@string/working_hours" />
+
+            <TextView
+                android:id="@+id/detail_open_close_time"
+                style="@style/ListRestraunts" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/LinearDetailStyle">
+
+            <TextView
+                style="@style/ListRestraunts"
+                android:text="@string/details_likes" />
+
+            <TextView
+                android:id="@+id/detail_likes"
+                style="@style/ListRestraunts" />
+        </LinearLayout>
     </LinearLayout>
-        <LinearLayout
-           style="@style/LinearDetailStyle">
-            <TextView
-                style="@style/ListRestraunts"
-                android:text="@string/distance"/>
-            <TextView
-               style="@style/ListRestraunts"
-                android:id="@+id/detail_distance"/>
-        </LinearLayout>
-        <LinearLayout
-            style="@style/LinearDetailStyle">
-            <TextView
-                style="@style/ListRestraunts"
-                android:text="@string/restraunt_adress"/>
-            <TextView
-                style="@style/ListRestraunts"
-                android:id="@+id/detail_adress"/>
-        </LinearLayout>
-        <LinearLayout
-            style="@style/LinearDetailStyle">
-            <TextView
-                style="@style/ListRestraunts"
-                android:text="@string/working_hours"/>
-            <TextView
-                style="@style/ListRestraunts"
-                android:id="@+id/detail_open_close_time"/>
-        </LinearLayout>
-        <LinearLayout
-            style="@style/LinearDetailStyle">
-            <TextView
-                style="@style/ListRestraunts"
-                android:text="@string/details_likes"/>
-            <TextView
-                style="@style/ListRestraunts"
-                android:id="@+id/detail_likes"/>
-        </LinearLayout>
-    </LinearLayout>
-<TextView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:text="@string/app_name"
-    android:gravity="center"/>
+
 
 </LinearLayout>

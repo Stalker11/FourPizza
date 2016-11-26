@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
     <xs:element name="address">
-    <xs:complexType>
+        <xs:complexType>
 
-    <xs:element name="lat" type="xs:double" />
-    <xs:element name="lon" type="xs:double" />
-    <xs:element name="time" type="xs:string" />
+            <xs:element name="lat" type="xs:double" />
+            <xs:element name="lon" type="xs:double" />
+            <xs:element name="time" type="xs:string" />
 
-    </xs:complexType>
+        </xs:complexType>
     </xs:element>
 </xs:schema>

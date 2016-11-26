@@ -175,7 +175,7 @@ public class RequestPizza {
                     pictures = gson.fromJson(ChangeJson.changePictureJson(response.body())
                             , new TypeToken<ArrayList<RestrauntPictures>>() {
                             }.getType());
-                    Log.d(TAG, "onResponse details: " + pictures.get(1).getPicturePrefix());
+                    //Log.d(TAG, "onResponse details: " + pictures.get(1).getPicturePrefix());
                     callBack.onSucsess(pictures);
                 } catch (NullPointerException e) {
                     Log.d(TAG, "onResponse: null" + e.getMessage());

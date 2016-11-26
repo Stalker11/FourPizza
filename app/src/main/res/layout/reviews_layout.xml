@@ -1,19 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-<ImageView
-  style="@style/ImageStyleRestrauntList"
-    android:id="@+id/user_photo"/>
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/user_photo"
+        style="@style/ImageStyleRestrauntList" />
+
     <LinearLayout
-     style="@style/LinearDetailStyle"
+        style="@style/LinearDetailStyle"
         android:orientation="vertical">
+
         <TextView
-            style="@style/ListRestraunts"
-            android:id="@+id/user_name"/>
+            android:id="@+id/user_name"
+            style="@style/ListRestraunts" />
+
         <TextView
-            style="@style/ListRestraunts"
-            android:id="@+id/user_review"/>
+            android:id="@+id/user_review"
+            style="@style/ListRestraunts" />
 
     </LinearLayout>
 </LinearLayout>

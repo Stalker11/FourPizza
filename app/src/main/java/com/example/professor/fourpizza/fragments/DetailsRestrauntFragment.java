@@ -25,6 +25,7 @@ import com.example.professor.fourpizza.http.RequestPizza;
 import com.example.professor.fourpizza.models.PizzaRestraunt;
 import com.example.professor.fourpizza.models.RestrauntPictures;
 import com.example.professor.fourpizza.models.UsersReviews;
+import com.example.professor.fourpizza.util.ItemDecorationView;
 import com.example.professor.fourpizza.util.ProjectConstans;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
@@ -81,18 +82,16 @@ public class DetailsRestrauntFragment extends Fragment {
         tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
             @Override
             public void onTabChanged(String s) {
-                if(tabHost.getCurrentTabTag().equals(details)){
+                if (tabHost.getCurrentTabTag().equals(details)) {
                     Log.d(TAG, "onTabChanged: " + tabHost.getCurrentTabTag());
                     setDetails(restraunt);
-                }
-                else if(tabHost.getCurrentTabTag().equals(reviews)){
-                    if(reviewsAdapter == null) {
+                } else if (tabHost.getCurrentTabTag().equals(reviews)) {
+                    if (reviewsAdapter == null) {
                         Log.d(TAG, "onTabChanged: " + tabHost.getCurrentTabTag());
                         new RequestPizza().requestReviews(restraunt.getId(), new ReviewCallBack());
                     }
-                }
-                else if(tabHost.getCurrentTabTag().equals(photos)){
-                    if(imagesAdapter == null) {
+                } else if (tabHost.getCurrentTabTag().equals(photos)) {
+                    if (imagesAdapter == null) {
                         new RequestPizza().requestPhotoForDetails(restraunt.getId(), new PhotoCallBack());
                         Log.d(TAG, "onTabChanged: " + tabHost.getCurrentTabTag());
                     }
@@ -103,24 +102,26 @@ public class DetailsRestrauntFragment extends Fragment {
         });
         tabHost.setCurrentTab(0);
         setDetails(restraunt);
-        Log.d(TAG, "onCreateView: "+tabHost.getCurrentTab());
+        Log.d(TAG, "onCreateView: " + tabHost.getCurrentTab());
         return view;
     }
-    private void setPhotos(List<RestrauntPictures> pictures){
+
+    private void setPhotos(List<RestrauntPictures> pictures) {
         imagesAdapter = new ImagesAdapter(pictures);
-        Log.d(TAG, "setPhotos: "+220);
-        recycler = (RecyclerView)view.findViewById(R.id.photos_recycler);
+        Log.d(TAG, "setPhotos: " + 220);
+        recycler = (RecyclerView) view.findViewById(R.id.photos_recycler);
         recycler.setAdapter(imagesAdapter);
-        Log.d(TAG, "setPhotos: "+recycler+" "+ imagesAdapter);
+        Log.d(TAG, "setPhotos: " + recycler + " " + imagesAdapter);
         recycler.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
     }
-    private void setDetails(PizzaRestraunt restraunt){
-        TextView name = (TextView)view.findViewById(R.id.details_restraunt_name);
-        TextView distance = (TextView)view.findViewById(R.id.detail_distance);
-        TextView adress = (TextView)view.findViewById(R.id.detail_adress);
-        ImageView image = (ImageView)view.findViewById(R.id.restraunt_picture_detail);
 
-        Picasso.with(context).load(pictureRequest(picture)).resize(700,300).error(R.drawable.movies_search_frag).into(image
+    private void setDetails(PizzaRestraunt restraunt) {
+        TextView name = (TextView) view.findViewById(R.id.details_restraunt_name);
+        TextView distance = (TextView) view.findViewById(R.id.detail_distance);
+        TextView adress = (TextView) view.findViewById(R.id.detail_adress);
+        ImageView image = (ImageView) view.findViewById(R.id.restraunt_picture_detail);
+
+        Picasso.with(context).load(pictureRequest(picture)).resize(700, 300).error(R.drawable.movies_search_frag).into(image
                 , new Callback() {
                     @Override
                     public void onSuccess() {
@@ -137,21 +138,25 @@ public class DetailsRestrauntFragment extends Fragment {
         distance.setText(String.valueOf(restraunt.getDistance()));
         adress.setText(restraunt.getAdress());
     }
-    private void setLikes(String likes, String worktime){
-        TextView hours = (TextView)view.findViewById(R.id.detail_open_close_time);
-        TextView like = (TextView)view.findViewById(R.id.detail_likes);
+
+    private void setLikes(String likes, String worktime) {
+        TextView hours = (TextView) view.findViewById(R.id.detail_open_close_time);
+        TextView like = (TextView) view.findViewById(R.id.detail_likes);
 
         hours.setText(worktime);
         like.setText(likes);
     }
-    private void setReviews(List<UsersReviews> reviews){
+
+    private void setReviews(List<UsersReviews> reviews) {
         reviewsAdapter = new ReviewsAdapter(reviews);
-        Log.d(TAG, "setPhotos: "+220);
-        recycler = (RecyclerView)view.findViewById(R.id.review_recycler);
+        Log.d(TAG, "setPhotos: " + 220);
+        recycler.addItemDecoration(new ItemDecorationView());
+        recycler = (RecyclerView) view.findViewById(R.id.review_recycler);
         recycler.setAdapter(reviewsAdapter);
-        Log.d(TAG, "setPhotos: "+recycler+" "+reviewsAdapter);
+        Log.d(TAG, "setPhotos: " + recycler + " " + reviewsAdapter);
         recycler.setLayoutManager(new LinearLayoutManager(context));
     }
+
     private String pictureRequest(RestrauntPictures picture) {
         if (picture != null) {
             StringBuilder builder = new StringBuilder();
@@ -165,11 +170,12 @@ public class DetailsRestrauntFragment extends Fragment {
         }
         return null;
     }
+
     private class LikesCallBacks implements LikesCallBack {
 
         @Override
         public void onSucsess(String likes, String workTime) {
-            setLikes(likes,workTime);
+            setLikes(likes, workTime);
         }
 
         @Override
@@ -177,13 +183,15 @@ public class DetailsRestrauntFragment extends Fragment {
 
         }
     }
-    private class PhotoCallBack implements PhotosCallBack{
+
+    private class PhotoCallBack implements PhotosCallBack {
         @Override
         public void onSucsess(List<RestrauntPictures> pictures) {
-        setPhotos(pictures);
+            setPhotos(pictures);
         }
     }
-    private class ReviewCallBack implements ReviewsCallBack{
+
+    private class ReviewCallBack implements ReviewsCallBack {
         @Override
         public void onSucsess(List<UsersReviews> reviews) {
             setReviews(reviews);
