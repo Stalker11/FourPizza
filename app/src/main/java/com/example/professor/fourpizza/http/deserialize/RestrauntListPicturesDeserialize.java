@@ -13,17 +13,18 @@ import com.google.gson.JsonParseException;
 
 import java.lang.reflect.Type;
 
-public class RestrauntListPicturesDeserialize implements JsonDeserializer<RestrauntPictures>{
+public class RestrauntListPicturesDeserialize implements JsonDeserializer<RestrauntPictures> {
     private static final String TAG = RestrauntListPicturesDeserialize.class.getSimpleName();
+
     @Override
     public RestrauntPictures deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         JsonObject obj = json.getAsJsonObject().getAsJsonObject("response");
         JsonObject photos = obj.getAsJsonObject().getAsJsonObject("photos");
         JsonArray array = photos.getAsJsonArray("items");
-        try{
-            Log.d(TAG, "deserialize:pictures "+array.get(0));
-            return new Gson().fromJson(array.get(0),RestrauntPictures.class);
-        }catch (Exception e){
+        try {
+            Log.d(TAG, "deserialize:pictures " + array.get(0));
+            return new Gson().fromJson(array.get(0), RestrauntPictures.class);
+        } catch (Exception e) {
 
         }
         return null;

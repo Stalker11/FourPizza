@@ -15,7 +15,7 @@ import com.example.professor.fourpizza.http.deserialize.TimeWorkDeserialize;
 import com.example.professor.fourpizza.models.PizzaRestraunt;
 import com.example.professor.fourpizza.models.RestrauntPictures;
 import com.example.professor.fourpizza.models.UsersReviews;
-import com.example.professor.fourpizza.util.ParserXml;
+import com.example.professor.fourpizza.util.parsers.ParserXml;
 import com.example.professor.fourpizza.util.ProjectConstans;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -72,7 +72,7 @@ public class RequestPizza {
                 for (PizzaRestraunt res : restraunts) {
                     requestPhotos(res.getId(), callBack);
                 }
-                          }
+            }
 
             @Override
             public void onFailure(Call<JsonElement> call, Throwable t) {
@@ -92,7 +92,7 @@ public class RequestPizza {
             public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
                 Gson gson = new GsonBuilder().registerTypeAdapter(RestrauntPictures.class,
                         new RestrauntListPicturesDeserialize()).create();
-               try {
+                try {
                     restrauntPictures = gson.fromJson(response.body(), RestrauntPictures.class);
                 } catch (NullPointerException e) {
                     Log.d(TAG, "onResponse: null" + e.getMessage());
@@ -168,14 +168,14 @@ public class RequestPizza {
         result.enqueue(new Callback<JsonElement>() {
             @Override
             public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
-                Log.d(TAG, "onResponse details: " + ChangeJson.changePictureJson(response.body()) + "  " + response.message() + "  " + call.request().toString());
-                //  Gson gson = new GsonBuilder().registerTypeAdapter(RestrauntPictures.class, new RestrauntPicturesDeserialize()).create();
+                Log.d(TAG, "onResponse details: " + ChangeJson.changePictureJson(response.body()) + "  "
+                        + response.message() + "  " + call.request().toString());
+
                 Gson gson = new GsonBuilder().create();
                 try {
                     pictures = gson.fromJson(ChangeJson.changePictureJson(response.body())
                             , new TypeToken<ArrayList<RestrauntPictures>>() {
                             }.getType());
-                    //Log.d(TAG, "onResponse details: " + pictures.get(1).getPicturePrefix());
                     callBack.onSucsess(pictures);
                 } catch (NullPointerException e) {
                     Log.d(TAG, "onResponse: null" + e.getMessage());
@@ -188,37 +188,40 @@ public class RequestPizza {
             }
         });
     }
-     public void requestReviews(String objectId, final ReviewsCallBack callBack){
-         Call<JsonElement> result = request.getReviews(changeIdString(objectId), ProjectConstans.CLIENT_ID
-                 , ProjectConstans.CLIENT_SECRET, getDate());
-         result.enqueue(new Callback<JsonElement>() {
-             @Override
-             public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
-                 Gson gson = new GsonBuilder().registerTypeAdapter(UsersReviews.class,
-                         new ReviewsDeserialize()).create();
-                 Log.d(TAG, "onResponse details: " + ChangeJson.changeReviewsJson(response.body()) + "  " + response.message() + "  " + call.request().toString());
-                 try {
-                     reviews = gson.fromJson(ChangeJson.changeReviewsJson(response.body())
-                             , new TypeToken<ArrayList<UsersReviews>>() {
-                             }.getType());
-                     Log.d(TAG, "onResponse details: " + reviews);
-                     callBack.onSucsess(reviews);
-                     for (UsersReviews u:reviews) {
-                         Log.d(TAG, "onResponse details: " + u.getUserFirstName());
-                     }
 
-                   //  callBack.onSucsess(pictures);
-                 } catch (Exception e) {
-                     Log.d(TAG, "onResponse: null" + e.getMessage());
-                 }
-             }
+    public void requestReviews(String objectId, final ReviewsCallBack callBack) {
+        Call<JsonElement> result = request.getReviews(changeIdString(objectId), ProjectConstans.CLIENT_ID
+                , ProjectConstans.CLIENT_SECRET, getDate());
+        result.enqueue(new Callback<JsonElement>() {
+            @Override
+            public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
+                Gson gson = new GsonBuilder().registerTypeAdapter(UsersReviews.class,
+                        new ReviewsDeserialize()).create();
+                Log.d(TAG, "onResponse details: " + ChangeJson.changeReviewsJson(response.body()) + "  "
+                        + response.message() + "  " + call.request().toString());
+                try {
+                    reviews = gson.fromJson(ChangeJson.changeReviewsJson(response.body())
+                            , new TypeToken<ArrayList<UsersReviews>>() {
+                            }.getType());
+                    Log.d(TAG, "onResponse details: " + reviews);
+                    callBack.onSucsess(reviews);
+                    for (UsersReviews u : reviews) {
+                        Log.d(TAG, "onResponse details: " + u.getUserFirstName());
+                    }
 
-             @Override
-             public void onFailure(Call<JsonElement> call, Throwable t) {
 
-             }
-         });
-     }
+                } catch (Exception e) {
+                    Log.d(TAG, "onResponse: null" + e.getMessage());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonElement> call, Throwable t) {
+
+            }
+        });
+    }
+
     private String getLocation() {
         List<String> loc = new ParserXml().parseGeolocation();
         StringBuilder builder = new StringBuilder();

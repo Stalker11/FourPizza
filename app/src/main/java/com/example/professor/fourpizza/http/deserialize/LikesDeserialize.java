@@ -15,6 +15,6 @@ public class LikesDeserialize implements JsonDeserializer<String> {
         JsonObject obj = json.getAsJsonObject().getAsJsonObject("response");
         JsonObject likes = obj.getAsJsonObject("likes");
         JsonElement like = likes.get("summary");
-        return new Gson().fromJson(like,String.class);
+        return new Gson().fromJson(like, String.class);
     }
 }

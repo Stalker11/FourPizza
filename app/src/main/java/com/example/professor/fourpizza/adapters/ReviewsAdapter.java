@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.example.professor.fourpizza.R;
 import com.example.professor.fourpizza.models.UsersReviews;
-import com.example.professor.fourpizza.util.RecyclerOnItemClickListener;
+import com.example.professor.fourpizza.util.listeners.RecyclerOnItemClickListener;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -102,7 +102,7 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ViewHold
             Log.d(TAG, "pictureRequest: " + builder.toString());
             return builder.toString();
         }
-        return null;
+        return "nothing";
     }
 
     private String userName(String firstName, String lastName) {

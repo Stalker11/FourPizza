@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface ApiCallBack {
     void onSucsess(List<PizzaRestraunt> restraunts, List<RestrauntPictures> pictures);
+
     void onError(String errorMessage);
 }

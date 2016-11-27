@@ -3,7 +3,7 @@ package com.example.professor.fourpizza.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class PizzaRestraunt implements Parcelable{
+public class PizzaRestraunt implements Parcelable {
     private String id;
     private String restrauntName;
     private String phone;
@@ -94,6 +94,7 @@ public class PizzaRestraunt implements Parcelable{
         parcel.writeInt(distance);
 
     }
+
     public static final Parcelable.Creator<PizzaRestraunt> CREATOR =
             new Parcelable.Creator<PizzaRestraunt>() {
 
@@ -105,6 +106,7 @@ public class PizzaRestraunt implements Parcelable{
                     return new PizzaRestraunt[size];
                 }
             };
+
     private PizzaRestraunt(Parcel parcel) {
         id = parcel.readString();
         restrauntName = parcel.readString();
@@ -115,7 +117,8 @@ public class PizzaRestraunt implements Parcelable{
         adress = parcel.readString();
         distance = parcel.readInt();
     }
-    public PizzaRestraunt(){
+
+    public PizzaRestraunt() {
 
     }
 }

@@ -5,7 +5,7 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
-public class RestrauntPictures implements Parcelable{
+public class RestrauntPictures implements Parcelable {
     @SerializedName("prefix")
     private String picturePrefix;
     @SerializedName("suffix")
@@ -43,6 +43,7 @@ public class RestrauntPictures implements Parcelable{
         parcel.writeString(width);
         parcel.writeString(height);
     }
+
     public static final Parcelable.Creator<RestrauntPictures> CREATOR =
             new Parcelable.Creator<RestrauntPictures>() {
 
@@ -51,7 +52,7 @@ public class RestrauntPictures implements Parcelable{
                 }
 
                 public RestrauntPictures[] newArray(int size) {
-                    return new RestrauntPictures [size];
+                    return new RestrauntPictures[size];
                 }
             };
 

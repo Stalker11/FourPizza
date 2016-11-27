@@ -5,12 +5,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.RecyclerView.ItemDecoration;
 import android.view.View;
-
-/**
- * Created by Professor on 22.11.2016.
- */
 
 public class ItemDecorationView extends RecyclerView.ItemDecoration {
     private Paint paintBlue;

@@ -8,4 +8,5 @@
     <string name="restraunt_adress">Adress:</string>
     <string name="working_hours">Working time:</string>
     <string name="details_likes">Likes:</string>
+    <string name="load_image">Loading. Please wait...</string>
 </resources>

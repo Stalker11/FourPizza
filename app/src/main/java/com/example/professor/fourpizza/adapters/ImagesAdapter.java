@@ -10,7 +10,7 @@ import android.widget.ImageView;
 
 import com.example.professor.fourpizza.R;
 import com.example.professor.fourpizza.models.RestrauntPictures;
-import com.example.professor.fourpizza.util.RecyclerOnItemClickListener;
+import com.example.professor.fourpizza.util.listeners.RecyclerOnItemClickListener;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 

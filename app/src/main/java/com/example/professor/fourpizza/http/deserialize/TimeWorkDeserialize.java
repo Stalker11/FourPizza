@@ -13,34 +13,36 @@ import java.lang.reflect.Type;
 
 public class TimeWorkDeserialize implements JsonDeserializer<String> {
     private final String TAG = TimeWorkDeserialize.class.getSimpleName();
+
     @Override
     public String deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         JsonObject obj = json.getAsJsonObject().getAsJsonObject("response");
-        Log.d(TAG, "deserialize:time "+obj);
+        Log.d(TAG, "deserialize:time " + obj);
         JsonObject hours = obj.getAsJsonObject("hours");
-        Log.d(TAG, "deserialize:time "+hours);
+        Log.d(TAG, "deserialize:time " + hours);
         JsonArray timeFrames = hours.getAsJsonArray("timeframes");
-        Log.d(TAG, "deserialize:time "+timeFrames);
+        Log.d(TAG, "deserialize:time " + timeFrames);
         String startTime = null;
         String endTime = null;
-        try{
+        try {
             JsonObject open = (JsonObject) timeFrames.get(0);
 
-            JsonArray  time = open.getAsJsonArray("open");
+            JsonArray time = open.getAsJsonArray("open");
             JsonObject objTime = (JsonObject) time.get(0);
 
             startTime = objTime.getAsJsonObject().get("start").toString();
             endTime = objTime.getAsJsonObject().get("end").toString();
-            Log.d(TAG, "deserialize:time "+startTime+" "+endTime);
-        }catch (NullPointerException e){
+            Log.d(TAG, "deserialize:time " + startTime + " " + endTime);
+        } catch (NullPointerException e) {
 
         }
-        return createTime(startTime,endTime);
+        return createTime(startTime, endTime);
     }
-    private String createTime(String startTime, String endTime){
-        if(startTime == null || endTime == null) return null;
-        char [] start = changeTimeString(startTime).toCharArray();
-        char [] end = changeTimeString(endTime).toCharArray();
+
+    private String createTime(String startTime, String endTime) {
+        if (startTime == null || endTime == null) return null;
+        char[] start = changeTimeString(startTime).toCharArray();
+        char[] end = changeTimeString(endTime).toCharArray();
 
         StringBuilder build = new StringBuilder();
         build.append("Start:")
@@ -59,7 +61,8 @@ public class TimeWorkDeserialize implements JsonDeserializer<String> {
                 .append(";");
         return build.toString();
     }
-    private String changeTimeString(String changeString){
-        return changeString.substring(1,changeString.length()-1);
+
+    private String changeTimeString(String changeString) {
+        return changeString.substring(1, changeString.length() - 1);
     }
 }

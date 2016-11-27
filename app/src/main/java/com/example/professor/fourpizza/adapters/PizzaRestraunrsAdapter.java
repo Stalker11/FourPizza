@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.example.professor.fourpizza.R;
 import com.example.professor.fourpizza.models.PizzaRestraunt;
 import com.example.professor.fourpizza.models.RestrauntPictures;
-import com.example.professor.fourpizza.util.PizzaRestrauntOnItemClickListener;
+import com.example.professor.fourpizza.util.listeners.PizzaRestrauntOnItemClickListener;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -79,10 +79,6 @@ public class PizzaRestraunrsAdapter extends RecyclerView.Adapter<PizzaRestraunrs
         if (errors != null) {
             holder.restrauntAdress.setText(errors);
         }
-        if (errors == null && restraunts == null) {
-            // Log.d(TAG, "onBindViewHolder: " + 55555555);
-            // holder.restrauntAdress.setText(context.getResources().getString(R.string.nothing_saved_films));
-        }
     }
 
     @Override
@@ -109,7 +105,6 @@ public class PizzaRestraunrsAdapter extends RecyclerView.Adapter<PizzaRestraunrs
 
             restrauntName = (TextView) itemView.findViewById(R.id.restraunt_name);
             distance = (TextView) itemView.findViewById(R.id.distance);
-            // restrauntAdress = (TextView) itemView.findViewById(R.id.restraunt_adress);
             restrauntPicture = (ImageView) itemView.findViewById(R.id.restraunt_picture);
         }
     }
@@ -134,6 +129,6 @@ public class PizzaRestraunrsAdapter extends RecyclerView.Adapter<PizzaRestraunrs
             Log.d(TAG, "pictureRequest: " + builder.toString());
             return builder.toString();
         }
-        return null;
+        return "nothing";
     }
 }

@@ -21,6 +21,7 @@ import com.example.professor.fourpizza.adapters.ReviewsAdapter;
 import com.example.professor.fourpizza.callback.LikesCallBack;
 import com.example.professor.fourpizza.callback.PhotosCallBack;
 import com.example.professor.fourpizza.callback.ReviewsCallBack;
+import com.example.professor.fourpizza.dialogs.AppProgressDialog;
 import com.example.professor.fourpizza.http.RequestPizza;
 import com.example.professor.fourpizza.models.PizzaRestraunt;
 import com.example.professor.fourpizza.models.RestrauntPictures;
@@ -87,11 +88,13 @@ public class DetailsRestrauntFragment extends Fragment {
                     setDetails(restraunt);
                 } else if (tabHost.getCurrentTabTag().equals(reviews)) {
                     if (reviewsAdapter == null) {
+                        AppProgressDialog.showProgressDialog();
                         Log.d(TAG, "onTabChanged: " + tabHost.getCurrentTabTag());
                         new RequestPizza().requestReviews(restraunt.getId(), new ReviewCallBack());
                     }
                 } else if (tabHost.getCurrentTabTag().equals(photos)) {
                     if (imagesAdapter == null) {
+                        AppProgressDialog.showProgressDialog();
                         new RequestPizza().requestPhotoForDetails(restraunt.getId(), new PhotoCallBack());
                         Log.d(TAG, "onTabChanged: " + tabHost.getCurrentTabTag());
                     }
@@ -113,6 +116,7 @@ public class DetailsRestrauntFragment extends Fragment {
         recycler.setAdapter(imagesAdapter);
         Log.d(TAG, "setPhotos: " + recycler + " " + imagesAdapter);
         recycler.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        AppProgressDialog.hideProgressDialog();
     }
 
     private void setDetails(PizzaRestraunt restraunt) {
@@ -125,7 +129,7 @@ public class DetailsRestrauntFragment extends Fragment {
                 , new Callback() {
                     @Override
                     public void onSuccess() {
-
+                        AppProgressDialog.hideProgressDialog();
                     }
 
                     @Override
@@ -150,11 +154,12 @@ public class DetailsRestrauntFragment extends Fragment {
     private void setReviews(List<UsersReviews> reviews) {
         reviewsAdapter = new ReviewsAdapter(reviews);
         Log.d(TAG, "setPhotos: " + 220);
-        recycler.addItemDecoration(new ItemDecorationView());
         recycler = (RecyclerView) view.findViewById(R.id.review_recycler);
+        recycler.addItemDecoration(new ItemDecorationView());
         recycler.setAdapter(reviewsAdapter);
         Log.d(TAG, "setPhotos: " + recycler + " " + reviewsAdapter);
         recycler.setLayoutManager(new LinearLayoutManager(context));
+        AppProgressDialog.hideProgressDialog();
     }
 
     private String pictureRequest(RestrauntPictures picture) {
@@ -168,7 +173,7 @@ public class DetailsRestrauntFragment extends Fragment {
             Log.d(TAG, "pictureRequest: " + builder.toString());
             return builder.toString();
         }
-        return null;
+        return "nothing";
     }
 
     private class LikesCallBacks implements LikesCallBack {
